@@ -1,0 +1,48 @@
+{
+    "version": 2,
+    "name": "KrakenD on k8s",
+    "port": 8080,
+    "cache_ttl": "3600s",
+    "timeout": "3s",
+    "host": [ "https://jsonplaceholder.typicode.com" ],
+    "endpoints": [
+        {
+            "endpoint": "/supu",
+            "backend": [
+                {
+                    "host": [ "http://krakend-service:8000" ],
+                    "url_pattern": "/__debug/supu"
+                }
+            ]
+        },
+        {
+            "endpoint": "/combination/{id}",
+            "backend": [
+                {
+                    "url_pattern": "/posts?userId={id}",
+                    "is_collection": true,
+                    "mapping": { "collection": "posts" }
+                },
+                {
+                    "url_pattern": "/users/{id}",
+                    "mapping": { "email": "personal_email" }
+                }
+            ]
+        },
+        {
+          "endpoint": "/splash",
+          "backend": [
+            {
+              "host": [ "http://fake-api:8080" ],
+              "url_pattern": "/shop/campaigns.json",
+              "whitelist": [ "campaigns" ]
+            },
+            {
+              "host": [ "http://fake-api:8080" ],
+              "url_pattern": "/shop/products.json",
+              "whitelist": [ "products" ]
+            }
+          ]
+        }
+    ]
+}
